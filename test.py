@@ -2,6 +2,9 @@
 # Welcome to your free trip to England! 
 #You are an aspiring soccer player and got invited to visit each stadium for every top soccer team in the Premier League! 
 import random
+
+
+
 user_name = ""
 cnt = 0
 m_cnt = 0
