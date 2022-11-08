@@ -1,7 +1,6 @@
 # Trip to England 
 # Welcome to your free trip to England! 
 #You are an aspiring soccer player and got invited to visit each stadium for every top soccer team in the Premier League! 
-
 import random
 user_name = ""
 cnt = 0
@@ -130,44 +129,36 @@ Game_Ministop_List = [[ministop1_input_text,ministop1_output_text],
 [ministop9_input_text,ministop9_output_text],
 [ministop10_input_text,ministop10_output_text],
 [ministop11_input_text,ministop11_output_text],]
-def Game_Begin():
-    Count_Update()
-    Message_Printer(Game_Msg_List[0])
-    Progress_Display()
-    Begin()
-def Story_Sequence(num):
-    Message_Printer(Game_Msg_List[num])    
-    Count_Update()
-    Progress_Display()
-    MiniStop_Printer(Game_Ministop_List[num-1][0],Game_Ministop_List[num-1][1])
-    Begin()
-def Normal_Ending():
-    ending_text =  "Thank you, " + user_name + " for playing this game!"
-    print(ending_text)
-    print(copyright_text)
-    print(f"Your total amount of stops were: {cnt}")
-    print()
-    print("Goodbye")
-def Quit_Ending():
-    print("You quit the game early :(")
-    ending_text =  "Thank you, " + user_name + " for playing this game!"
-    print(ending_text)
-    print(copyright_text)
-    print(f"Your total amount of stops were: {cnt}")
-    print("Goodbye, next time complete the game.")
 def main():
     global cnt,m_cnt,msg_1,Quit_Status,ending_text,copyright_text
     for i in range(Game_Loop_Cnt):
         if i == 0:
-            Game_Begin()
+            Count_Update()
+            Message_Printer(Game_Msg_List[i])
+            Progress_Display()
+            Begin()
         else:
             if Quit_Status:
                 break
             else:
-               Story_Sequence(i)
+                Message_Printer(Game_Msg_List[i])    
+                Count_Update()
+                Progress_Display()
+                MiniStop_Printer(Game_Ministop_List[i-1][0],Game_Ministop_List[i-1][1])
+                Begin()
     if not Quit_Status:
-        Normal_Ending()
+        ending_text =  "Thank you, " + user_name + " for playing this game!"
+        print(ending_text)
+        print(copyright_text)
+        print(f"Your total amount of stops were: {cnt}")
+        print()
+        print("Goodbye")
     elif Quit_Status:
-       Quit_Ending()
+        print("You quit the game early :(")
+        ending_text =  "Thank you, " + user_name + " for playing this game!"
+        print(ending_text)
+        print(copyright_text)
+        print(f"Your total amount of stops were: {cnt}")
+        print("Goodbye, next time complete the game.")
         
 main()
