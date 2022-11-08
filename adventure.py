@@ -3,6 +3,7 @@
 #You are an aspiring soccer player and got invited to visit each stadium for every top soccer team in the Premier League! 
 
 import random
+score = 0
 user_name = ""
 cnt = 0
 m_cnt = 0
@@ -111,9 +112,13 @@ def Message_Printer(m):
         print(f"{m}")
         user_name = input("Enter your name: ")
         print(f"Hey, {user_name}! Hope you are doing well. Guess what? Congratulations, because of your hard work and dedication playing soccer, you have been awarded a free trip to England!")
-def Progress_Display():
-    global cnt
+def Progress_Display(score_show = 0):
+    global cnt, score
     print(f"You are at stop number {cnt}")
+
+    if score_show == 1:
+        score = score + 10
+        print(f"You have visited a new stadium!\nYou now have a score of {score} points!")
 def Count_Update():
     global cnt
     cnt = cnt + 1
@@ -205,7 +210,7 @@ def Game_Begin():
 def Story_Sequence(num):
     Message_Printer(Locations[num]["Message"])    
     Count_Update()
-    Progress_Display()
+    Progress_Display(1)
     MiniStop_Printer(Locations[num]["Input_Text"],Locations[num]["Output_Text"])
     Begin()
 def Normal_Ending():
