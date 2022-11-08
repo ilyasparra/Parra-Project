@@ -118,7 +118,7 @@ def Count_Update():
     global cnt
     cnt = cnt + 1
 Game_Loop_Cnt = 11
-Game_Msg_List = [Game_Title,msg_2,msg_3,msg_4,msg_5,msg_6,msg_7,msg_8,msg_9,msg_10,msg_11]
+Game_Msg_List = [Game_Title,msg_2,msg_3,msg_4,msg_5,msg_6,msg_7,msg_8,msg_9,msg_10,msg_11,"?????"]
 Game_Ministop_List = [[ministop1_input_text,ministop1_output_text],
 [ministop2_input_text,ministop2_output_text],
 [ministop3_input_text,ministop3_output_text],
@@ -137,64 +137,70 @@ Locations = {
     },
     1 : {
         "Message" : Game_Msg_List[1],
-        "Input_Text" : Game_Ministop_List[1][0],
-        "Output_Text" : Game_Ministop_List[1][1],
+        "Input_Text" : Game_Ministop_List[0][0],
+        "Output_Text" : Game_Ministop_List[0][1],
         "Was_Visited" : False
     },
     2 : {
         "Message" : Game_Msg_List[2],
-        "Input_Text" : Game_Ministop_List[2][0],
-        "Output_Text" : Game_Ministop_List[2][1],
+        "Input_Text" : Game_Ministop_List[1][0],
+        "Output_Text" : Game_Ministop_List[1][1],
         "Was_Visited" : False
     },
     3 : {
         "Message" : Game_Msg_List[3],
-        "Input_Text" : Game_Ministop_List[3][0],
-        "Output_Text" : Game_Ministop_List[3][1],
+        "Input_Text" : Game_Ministop_List[2][0],
+        "Output_Text" : Game_Ministop_List[2][1],
         "Was_Visited" : False
     },
     4 : {
         "Message" : Game_Msg_List[4],
-        "Input_Text" : Game_Ministop_List[4][0],
-        "Output_Text" : Game_Ministop_List[4][1],
+        "Input_Text" : Game_Ministop_List[3][0],
+        "Output_Text" : Game_Ministop_List[3][1],
         "Was_Visited" : False
     },
     5 : {
         "Message" : Game_Msg_List[5],
-        "Input_Text" : Game_Ministop_List[5][0],
-        "Output_Text" : Game_Ministop_List[5][1],
+        "Input_Text" : Game_Ministop_List[4][0],
+        "Output_Text" : Game_Ministop_List[4][1],
         "Was_Visited" : False
     },
     6 : {
         "Message" : Game_Msg_List[6],
-        "Input_Text" : Game_Ministop_List[6][0],
-        "Output_Text" : Game_Ministop_List[6][1],
+        "Input_Text" : Game_Ministop_List[5][0],
+        "Output_Text" : Game_Ministop_List[5][1],
         "Was_Visited" : False
     },
     7 : {
         "Message" : Game_Msg_List[7],
-        "Input_Text" : Game_Ministop_List[7][0],
-        "Output_Text" : Game_Ministop_List[7][1],
+        "Input_Text" : Game_Ministop_List[6][0],
+        "Output_Text" : Game_Ministop_List[6][1],
         "Was_Visited" : False
     },
     8 : {
         "Message" : Game_Msg_List[8],
-        "Input_Text" : Game_Ministop_List[8][0],
-        "Output_Text" : Game_Ministop_List[8][1],
+        "Input_Text" : Game_Ministop_List[7][0],
+        "Output_Text" : Game_Ministop_List[7][1],
         "Was_Visited" : False
     },
     9 : {
         "Message" : Game_Msg_List[9],
-        "Input_Text" : Game_Ministop_List[9][0],
-        "Output_Text" : Game_Ministop_List[9][1],
+        "Input_Text" : Game_Ministop_List[8][0],
+        "Output_Text" : Game_Ministop_List[8][1],
         "Was_Visited" : False
     },
     10 : {
         "Message" : Game_Msg_List[10],
+        "Input_Text" : Game_Ministop_List[9][0],
+        "Output_Text" : Game_Ministop_List[9][1],
+        "Was_Visited" : False
+    },
+    11 : {
+        "Message" : Game_Msg_List[11],
         "Input_Text" : Game_Ministop_List[10][0],
         "Output_Text" : Game_Ministop_List[10][1],
         "Was_Visited" : False
-    }
+    },
 }
 
 def Game_Begin():
