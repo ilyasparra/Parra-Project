@@ -4,6 +4,7 @@
 
 import random
 score = 0
+Next_Stop = 1
 user_name = ""
 cnt = 0
 m_cnt = 0
@@ -87,8 +88,23 @@ def Command_Check(s):
         print(Quit_Status)
         #x = input(f"{msg_1}")
         #Command_Check(x)
+def Find_Surrounding_Locations(c):
+    current_coords = [None,None]
+    for i in len(Map):
+        for j in len(Map[j]):
+            if Map[i][j] == c:
+                current_coords[0] = i
+                current_coords[1] = j
+            break
+    surrounding_coords = [[],[],[],[]]
+# Find surroudning coordinates, 1st is North, 2nd is South, 3rd is East, 4th is West
+# Display options in begin for next stop
+# Player chooses option as next stop, which is used for the next 
 
 
+
+        
+        
 def MiniStop_Printer(inp,out):
     global m_cnt
     m = input(f"{inp}")
@@ -101,6 +117,7 @@ def Begin(msg=begin):
         msg = msg_1
     elif cnt == 11:
         msg = end
+    
     b = input(f"{msg}\n")
     Command_Check(b)
     
@@ -135,7 +152,12 @@ Game_Ministop_List = [[ministop1_input_text,ministop1_output_text],
 [ministop9_input_text,ministop9_output_text],
 [ministop10_input_text,ministop10_output_text],
 [ministop11_input_text,ministop11_output_text],]
-Locations = {
+Map = [
+    ["N",4,2,6],
+    [1,8,7,9],
+    ["N",5,10,3]
+]
+Locations_Dict = {
     0 : {
         "Message" : Game_Msg_List[0],
         "Was_Visited" : False
@@ -204,14 +226,14 @@ Locations = {
 
 def Game_Begin():
     Count_Update()
-    Message_Printer(Locations[0]["Message"])
+    Message_Printer(Locations_Dict[0]["Message"])
     Progress_Display()
     Begin()
 def Story_Sequence(num):
-    Message_Printer(Locations[num]["Message"])    
+    Message_Printer(Locations_Dict[num]["Message"])    
     Count_Update()
     Progress_Display(1)
-    MiniStop_Printer(Locations[num]["Input_Text"],Locations[num]["Output_Text"])
+    MiniStop_Printer(Locations_Dict[num]["Input_Text"],Locations_Dict[num]["Output_Text"])
     Begin()
 def Normal_Ending():
     ending_text =  "Thank you, " + user_name + " for playing this game!"
@@ -228,7 +250,7 @@ def Quit_Ending():
     print(f"Your total amount of stops were: {cnt}")
     print("Goodbye, next time complete the game.")
 def main():
-    global cnt,m_cnt,msg_1,Quit_Status,ending_text,copyright_text
+    global cnt,m_cnt,msg_1,Quit_Status,ending_text,copyright_text,Next_Stop
     for i in range(Game_Loop_Cnt):
         if i == 0:
             Game_Begin()
@@ -236,6 +258,7 @@ def main():
             if Quit_Status:
                 break
             else:
+                # Replace with next stop when done
                Story_Sequence(i)
     if not Quit_Status:
         Normal_Ending()
