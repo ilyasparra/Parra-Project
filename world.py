@@ -10,6 +10,8 @@ class World:
         World.current_location = 0
         World.setup = True
         pass
+    def get_current_location(World):
+        return World.current_location
     def get_surrounding_locations(World,coords,):
         r, c = coords
         North_offset = [-1,0]
