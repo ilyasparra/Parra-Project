@@ -4,7 +4,8 @@ Help = "Possible Commands:\nPress Enter without typing to continue\nNORTH to see
 Game_Title = "\nWelcome to Your Free Trip To England\n"
 begin = "Press enter to continue to the next stadium: "
 end = "You have finished your trip! Press Enter to see credits"
-Quit_Msg = "You have decided to quit the game. You will be exited out of the game after completing the stop."
+# Old version: Quit_Msg = "You have decided to quit the game. You will be exited out of the game after completing the stop."
+Quit_Msg = "You have decided to quit the game. Press enter to see end."
 Quit_Status = False
 msg_1 = "\nPress enter to continue:"
 msg_2 = "\nYou are at Old Trafford surrounded by red jerseys of Manchester United fans."
@@ -55,6 +56,7 @@ Game_Ministop_List = [[ministop1_input_text,ministop1_output_text],
 Locations_Dict = {
     0 : {
         "Message" : Game_Msg_List[0],
+        "Input_Text" : begin,
         "Was_Visited" : False
     },
     1 : {
@@ -126,7 +128,16 @@ Locations_Dict = {
         "Input_Text" : Game_Ministop_List[10][0],
         "Output_Text" : Game_Ministop_List[10][1],
         "Was_Visited" : False
+    },
+    "Quit" : {
+        "Message" : Quit_Msg,
+        "Input_Text" : copyright_text
+    },
+    "Finish": {
+        "Message" : end,
+        "Input_Text" : copyright_text
     }
+
 }
 User_Commmands = ["","NORTH","SOUTH","EXAMINE","HELP","QUIT"]
 Examine_Statements = ["Nice","full of Loud people","Colorful","A Competitve place"]
