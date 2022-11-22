@@ -50,7 +50,7 @@ class World:
                 index = Info.index(name)
                 str = Directions[index] + "\n"
                 options = options + str
-        user_choice = input(f"\nSurrounding Destinations:\n{options}\nPress Enter to replay the location or\nChoose a cardinal direction to move to: ")
+        user_choice = input(f"\nSurrounding Destinations:\n{options}\nPress Enter to replay the location or\nChoose a location to move to: ")
         # Act on user response and return appropriate location id
         for name in Info:
             if user_choice.find(name[1]) != -1:

@@ -31,12 +31,22 @@ class Player:
     def setup(Player):
         Player.start()
         Player.move(7)
+    def progress_display(Player):
+        if Player.current_locale >=1 and Player.current_locale <= 10:
+            loc_name = Locations_Dict[Player.current_locale].get("Name")
+            loc_status = Locations_Dict[Player.current_locale].get("Was_Visited")
+            if not loc_status:
+                Player.score += 25
+                Locations_Dict[Player.current_locale]["Was_Visited"] = True
+            print(f"\nYou have just visited + {loc_name}\nNice Job!\nYour score is now {Player.score}")
     def game_loop(Player):
         while Player.move_count < 10:
+            Player.progress_display()
             next_loc = Player.choose()
             Player.move(next_loc)
             Player.move_count += 1
     def ending(Player):
+        Player.progress_display()
         if Quit_Status:
             Player.move(11)
         else:
