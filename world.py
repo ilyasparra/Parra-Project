@@ -1,109 +1,75 @@
-from general_info import Map,Locations_Dict, Quit_Status
+from general_info import Map,Locations_Dict, Quit_Status, get_nearby_locations, id_to_coords,Location_List_General
 from location import Location
 class World:
     Location_List = []
     map = []
     def __init__(World):
-        World.Location_Initialization()
         World.Move_Limit = 10
         World.map = Map
-        World.current_location = 0
+        World.current_location:int
         World.setup = True
         pass
     def get_current_location(World):
         return World.current_location
-    def get_surrounding_locations(World,coords,):
-        r, c = coords
-        North_offset = [-1,0]
-        South_offset = [1,0]
-        East_offset = [0,1]
-        West_offset = [0,-1]
-        if r == 0:
-            North_offset = [0,0]
-        elif r == len(World.map)-1:
-            South_offset = [0,0]
-        if c == 0:
-            East_offset = [0,0]
-        elif c == len(World.map[r])-1:
-            West_offset = [0,0]
-        offsets = [North_offset,South_offset,East_offset,West_offset]
-        surrounding_locations = [[],[],[],[]] # North, South, East, West
-        for offset in offsets:
-            new_coords = coords
-            new_coords[0] += offset[0]
-            new_coords[1] += offset[1]
-            surrounding_locations[offset] = new_coords
+    def get_surrounding_locations(World,coords):
+        surrounding_locations = get_nearby_locations(coords)
         return surrounding_locations
     def get_coords(World,id):
-        map_coords = [None,None]
-        Break_Indicator = False
-        for row in World.map:
-            for col in World.map:
-                if World.map[row][col] == id:
-                    map_coords = row, col
-                    Break_Indicator = True
-                    break
-            if Break_Indicator:
-                break
-            return map_coords
-        pass
-    def options(World):
+        coords = id_to_coords(id)
+        return coords
+    def options(World,id):
         # find current location map coords
-        map_coords = World.get_coords(World.current_location)
+        map_coords = World.get_coords(id)
         row, col = map_coords
         # Find surrounding locations
         surrounding_locations = World.get_surrounding_locations(map_coords)
         # Filter out eligible locations
+        Info = []
         for s_loc in surrounding_locations:
             nearby_loc = World.map[s_loc[0]][s_loc[1]]
             current_loc = World.map[row][col]
+            arr = [None,None]
             if nearby_loc == "N" or nearby_loc == current_loc:
-                s_loc = "NA"
+                arr[0] = "NA"
+                arr[1] = "NA"
             else:
-                num_id = World.map[row][col]
-                s_loc[0] = num_id
-                s_loc[1] = Locations_Dict[num_id].get("Name")
+                num_id = World.map[s_loc[0]][s_loc[1]]
+                arr[0] = num_id
+                arr[1] = Locations_Dict[num_id].get("Name")
+            Info.append(arr)
         # Get names and prepare strings
-        North = f"\nNorth of you is {surrounding_locations[0][1]} "
-        South = f"\nSouth of you is {surrounding_locations[1][1]} "
-        East =  f"\nEast of you is {surrounding_locations[2][1]} "
-        West =  f"\nWest of you is {surrounding_locations[3][1]} "
+        North = f"\nNorth of you is {Info[0][1]} "
+        South = f"\nSouth of you is {Info[1][1]} "
+        East =  f"\nEast of you is {Info[2][1]} "
+        West =  f"\nWest of you is {Info[3][1]} "
         Directions = [North,South,East,West]
         # Display options
         options:str = ""
-        for status in surrounding_locations:
-            if not status[1] == "NA":
-                index = surrounding_locations.index(status)
-                options = options + Directions[index]
-            options = options +"\n"
+        for name in Info:
+            if not name[1] == "NA":
+                index = Info.index(name)
+                str = Directions[index] + "\n"
+                options = options + str
         user_choice = input(f"\nSurrounding Destinations:\n{options}\nPress Enter to replay the location or\nChoose a cardinal direction to move to: ")
         # Act on user response and return appropriate location id
-        for name in surrounding_locations:
-            if not user_choice.find(name[1]) == -1:
+        for name in Info:
+            if user_choice.find(name[1]) != -1:
                 loc_id = name[0]
                 return loc_id
-            else:
-                print("\nReplaying previous stadium due to invalid command or enter key\n")
-                return World.map[row][col]
-    def Location_Sequence(World):
-        Player_Location = World.Location_List[World.current_location]
-        if World.setup:
-            Player_Location.play_location()
-            World.current_location = 1
-        while World.Move_Limit > 0 and not Quit_Status:
-            Player_Location.play_location()
-            World.current_location = World.options()
-            World.Move_Limit -= 1
-        if Quit_Status:
-            World.current_location = 11 # 11 is for quit ending
-            Player_Location.play_location()
+            
+        print("\nReplaying previous stadium due to invalid command or enter key\n")
+        return World.map[row][col]
+    def update_location(World,id):
+        if id == "SETUP":
+            World.current_location = 0
         else:
-            World.current_location = 12 # 12 is for finish ending
-            Player_Location.play_location()
+            World.current_location = id
+        player_locale = World.Location_List[World.current_location]
+        player_locale.play_location()
+        pass
     def Location_Initialization(World):
-        for id in range(10):
+        for id in range(len(Locations_Dict)):
             World.Location_List.append(Location(id))
+            Location_List_General.append(Location(id))
  
 
-
-    

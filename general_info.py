@@ -2,7 +2,10 @@ ending_text:str
 copyright_text = "©Ilyas Foundation Incorporated"
 Help = "Possible Commands:\nPress Enter without typing to continue\nNORTH to see what location is north of you\nSOUTH to see what location is south of you\nEXAMINE to find information on current location\nQUIT to end game\nHELP to see commands again"
 Game_Title = "\nWelcome to Your Free Trip To England\n"
-begin = "Press enter to continue to the next stadium: "
+Name_Input = "\nEnter your name: "
+Name = ""
+Greeting = "\nHey, ! Hope you are doing well. Guess what? \nCongratulations, because of your hard work and dedication playing soccer, \nyou have been awarded a free trip to England!"
+begin = "\nPress enter to continue to the next stadium: "
 end = "You have finished your trip! Press Enter to see credits"
 # Old version: Quit_Msg = "You have decided to quit the game. You will be exited out of the game after completing the stop."
 Quit_Msg = "You have decided to quit the game. Press enter to see end."
@@ -56,7 +59,9 @@ Game_Ministop_List = [[ministop1_input_text,ministop1_output_text],
 Locations_Dict = {
     0 : {
         "Message" : Game_Msg_List[0],
-        "Input_Text" : begin,
+        "Name_Set" : Name_Input,
+        "Greeting" : Greeting,
+        "Input_Text": begin,
         "Was_Visited" : False
     },
     1 : {
@@ -129,20 +134,58 @@ Locations_Dict = {
         "Output_Text" : Game_Ministop_List[10][1],
         "Was_Visited" : False
     },
-    "Quit" : {
+    11 : {
         "Message" : Quit_Msg,
-        "Input_Text" : copyright_text
+        "Input_Text" : copyright_text,
     },
-    "Finish": {
+    12: {
         "Message" : end,
         "Input_Text" : copyright_text
     }
 
 }
-User_Commmands = ["","NORTH","SOUTH","EXAMINE","HELP","QUIT"]
+User_Commmands = ["","NORTH","SOUTH","EAST","WEST","EXAMINE","HELP","QUIT"]
 Examine_Statements = ["Nice","full of Loud people","Colorful","A Competitve place"]
 Map = [
     ["N",4,2,6],
     [1,8,7,9],
     ["N",5,10,3]
 ]
+Location_List_General = []
+def id_to_coords(id):
+    map_coords = [None,None]
+    Break_Indicator = False
+    for row in range(len(Map)):
+        for col in range(len(Map)):
+            if Map[row][col] == id:
+                map_coords = row, col
+                Break_Indicator = True
+                break
+        if Break_Indicator:
+            break
+    return map_coords
+    
+
+def get_nearby_locations(coords):
+        r, c = coords
+        North_offset = [-1,0]
+        South_offset = [1,0]
+        East_offset = [0,1]
+        West_offset = [0,-1]
+        if r == 0:
+            North_offset = [0,0]
+        elif r == len(Map)-1:
+            South_offset = [0,0]
+        if c == 0:
+            East_offset = [0,0]
+        elif c == len(Map[r])-1:
+            West_offset = [0,0]
+        offsets = [North_offset,South_offset,East_offset,West_offset]
+        surrounding_locations = [[],[],[],[]] # North, South, East, West
+        for offset in range(len(offsets)):
+            new_coords = list(coords)
+            new_coords[0] = new_coords[0] + offsets[offset][0]
+            new_coords[1] = new_coords[1] + offsets[offset][1]
+            surrounding_locations[offset] = new_coords
+        return surrounding_locations
+
