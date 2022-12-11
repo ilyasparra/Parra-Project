@@ -144,7 +144,7 @@ Locations_Dict = {
     }
 
 }
-User_Commmands = ["","NORTH","SOUTH","EAST","WEST","EXAMINE","HELP","QUIT"]
+User_Commmands = ["","NORTH","SOUTH","EAST","WEST","EXAMINE","HELP","QUIT","SAVE","LOAD"]
 Examine_Statements = ["Nice","full of Loud people","Colorful","A Competitve place"]
 Map = [
     ["N",4,2,6],
@@ -152,6 +152,42 @@ Map = [
     ["N",5,10,3]
 ]
 Location_List_General = []
+Current_Save_Data = ""
+Load_Data = {
+    "Status" : False,
+    "Save_Data" : None
+}
+Save_States = []
+def prompt_save_name(action):
+    save_file_name = input("\nEnter name of save file: ") + ".txt"
+    if action == "WRITE":
+        if not (save_file_name in Save_States):
+            return save_file_name
+        else:
+            print("\nName can't match previous save file names, please choose another")
+            prompt_save_name("WRITE")
+    elif action == "READ":
+        if save_file_name in Save_States:
+            return save_file_name
+        else:
+            print("\nSave file with that name doesn't exist, please ensure that name is spelled correctly")
+            prompt_save_name("READ")
+def read_save_file(filename):
+    file = open(filename,"r")
+    Name = file.readline()[6:]
+    Location_id = int(file.readline()[10:])
+    Locations_Visited = file.readline()[20:-2].split(", ")
+    Moves_Done = int(file.readline()[12:])
+    Score = int(file.readline()[7:])
+    file.close()
+    data = {
+        "Name" : Name,
+        "Location_Id" : Location_id,
+        "Locations_Visited" : Locations_Visited,
+        "Moves_Done" : Moves_Done,
+        "Score" : Score        
+    }
+    return data
 def id_to_coords(id):
     map_coords = [None,None]
     Break_Indicator = False

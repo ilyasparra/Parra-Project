@@ -1,4 +1,5 @@
-from general_info import Locations_Dict,Examine_Statements,User_Commmands,Help,Quit_Status,Quit_Msg,id_to_coords,get_nearby_locations,Location_List_General,Name
+from general_info import*
+import general_info
 import random
 class Location:
     def __init__(Location,id):
@@ -26,9 +27,13 @@ class Location:
         elif type == "Output":
             return Location.output
         pass
-    def set_visited(Location):
-        Locations_Dict[Location.id]["Was_Visited"] = True
-        Location.visited_status = True
+    def set_visited(Location,status=True):
+        if status:
+            general_info.Locations_Dict[Location.id]["Was_Visited"] = True
+            Location.visited_status = True
+        else:
+            general_info.Locations_Dict[Location.id]["Was_Visited"] = False
+            Location.visited_status = False
     def id_by_name(name):
             ans = -1
             for i in range(1,11):
@@ -77,11 +82,24 @@ class Location:
                 Location.user_command(user_response)
                 pass
             elif str.upper().find(User_Commmands[7]) != -1:
-                Quit_Status = True
+                general_info.Quit_Status = True
                 print(Quit_Msg)
                 user_response = input(continue_msg)
                 Location.user_command(user_response)
                 pass
+            elif str.upper().find(User_Commmands[8]) != -1:
+                # Save
+                save_file_name = prompt_save_name("WRITE")
+                save_file = open(save_file_name,"w")
+                save_file.write(Current_Save_Data)
+                save_file.close()
+                input("Save file has been created. Press Enter to continue: ")
+            elif str.upper().find(User_Commmands[9]) != -1:
+                # Load
+                save_file_name = prompt_save_name("READ")
+                save_data = read_save_file(save_file_name)
+                general_info.Load_Data["Save_Data"] = save_data
+                input("New save file will be loaded upon current location's completion. Press enter to continue: ")
     def play_location(Location):
         if Location.id != 0 and Location.id <= 10:
             print("\n"+Location.message)
@@ -92,7 +110,7 @@ class Location:
         elif Location.id == 0:
             print("\n"+Location.message)
             name_set = input("\n"+Location.info.get("Name_Set"))
-            Name = name_set
+            general_info.Name = name_set
             print("\n"+Location.info.get("Greeting"))
             input("\n"+Location.input)
         else:
