@@ -42,71 +42,78 @@ class Location:
                     return ans
             return ans
     def user_command(Location,str):
+        def recur():
+            recur_str = input("Press Enter to continue or input another command: ")
+            Location.user_command(recur_str)
         continue_msg = "\nPress enter to continue"
-        if not Location.name != None:
-            if str.find(User_Commmands[0]) != -1:
+        command_id = general_info.User_Command_Finder(str)
+        if command_id == 0 or command_id == "Not Found":
+            # Space to continue
                 pass
-            elif str.upper().find(User_Commmands[1]) != -1:
-                coords = id_to_coords(Location.id)
-                locale = get_nearby_locations(coords)[0]
-                print(Location_List_General[locale])
-                user_response = input(continue_msg)
-                Location.user_command(user_response)
-                pass
-            elif str.upper().find(User_Commmands[2]) != -1:
-                coords = id_to_coords(Location.id)
-                locale = get_nearby_locations(coords)[1]
-                print(Location_List_General[locale])
-                user_response = input(continue_msg)
-                Location.user_command(user_response)
-            elif str.upper().find(User_Commmands[3]) != -1:
-                coords = id_to_coords(Location.id)
-                locale = get_nearby_locations(coords)[2]
-                print(Location_List_General[locale])
-                user_response = input(continue_msg)
-                Location.user_command(user_response)
-            elif str.upper().find(User_Commmands[4]) != -1:
-                coords = id_to_coords(Location.id)
-                locale = get_nearby_locations(coords)[3]
-                print(Location_List_General[locale])
-                user_response = input(continue_msg)
-                Location.user_command(user_response)
-            elif str.upper().find(User_Commmands[5]) != -1:
-                print(Location)
-                user_response = input(continue_msg)
-                Location.user_command(user_response)
-                pass
-            elif str.upper().find(User_Commmands[6]) != -1:
-                print(Help)
-                user_response = input(continue_msg)
-                Location.user_command(user_response)
-                pass
-            elif str.upper().find(User_Commmands[7]) != -1:
-                general_info.Quit_Status = True
-                print(Quit_Msg)
-                user_response = input(continue_msg)
-                Location.user_command(user_response)
-                pass
-            elif str.upper().find(User_Commmands[8]) != -1:
-                # Save
-                save_file_name = prompt_save_name("WRITE")
-                save_file = open(save_file_name,"w")
-                save_file.write(Current_Save_Data)
-                save_file.close()
-                input("Save file has been created. Press Enter to continue: ")
-            elif str.upper().find(User_Commmands[9]) != -1:
-                # Load
-                save_file_name = prompt_save_name("READ")
-                save_data = read_save_file(save_file_name)
-                general_info.Load_Data["Save_Data"] = save_data
-                input("New save file will be loaded upon current location's completion. Press enter to continue: ")
+        elif command_id == 1:
+            # North
+            coords = id_to_coords(Location.id)
+            locale = get_nearby_locations(coords)[0]
+            print(Location_List_General[locale])
+            recur()
+            pass
+        elif command_id == 2:
+            # South
+            coords = id_to_coords(Location.id)
+            locale = get_nearby_locations(coords)[1]
+            print(Location_List_General[locale])
+            recur()
+        elif command_id == 3:
+            # East
+            coords = id_to_coords(Location.id)
+            locale = get_nearby_locations(coords)[2]
+            print(Location_List_General[locale])
+            recur()
+        elif command_id == 4:
+            # West
+            coords = id_to_coords(Location.id)
+            locale = get_nearby_locations(coords)[3]
+            print(Location_List_General[locale])
+            recur()
+        elif command_id == 5:
+            # Examine
+            print(Location)
+            recur()
+            pass
+        elif command_id == 6:
+            # Help
+            print(general_info.Help)
+            recur()
+            pass
+        elif command_id == 7:
+            general_info.Quit_Status = True
+            print(general_info.Quit_Msg)
+            recur()
+            pass
+        elif command_id == 8:
+            # Save
+            save_file_name = prompt_save_name("WRITE")
+            save_file = open(save_file_name,"w")
+            save_file.write(general_info.Current_Save_Data)
+            save_file.close()
+            print("Save file has been created")
+            recur()
+        elif command_id == 9:
+            # Load
+            save_file_name = prompt_save_name("READ")
+            save_data = read_save_file(save_file_name)
+            general_info.Load_Data["Save_Data"] = save_data
+            general_info.Load_Data["Load_Status"] = True
+            print("New save file will be loaded upon current location's completion.")
+            recur()
     def play_location(Location):
         if Location.id != 0 and Location.id <= 10:
             print("\n"+Location.message)
             user_input = input("\n"+Location.input)
             Location.user_command(user_input)
             if Location.output != None:
-                input("\n"+Location.output)
+                user_input = input("\n"+Location.output)
+                Location.user_command(user_input)
         elif Location.id == 0:
             print("\n"+Location.message)
             name_set = input("\n"+Location.info.get("Name_Set"))

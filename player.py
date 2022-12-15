@@ -34,7 +34,7 @@ class Player:
         save_data = general_info.Load_Data.get("Save_Data")
         Player.name = save_data.get("Name")
         Player.current_locale = save_data.get("Location_Id")
-        Player.locations_visited = save_data.get("Location_Visited")
+        Player.locations_visited = save_data.get("Locations_Visited")
         for location in Player.world.Location_List:
             if location.id in Player.locations_visited:
                 location.set_visited(True)
@@ -42,8 +42,10 @@ class Player:
                 location.set_visited(False)
         Player.move_count = save_data.get("Moves_Done")
         Player.score = save_data.get("Score")
-              # Check for bugs
-        pass
+        general_info.Load_Data["Load_Status"] = False
+        Location_Name = general_info.Locations_Dict[Player.current_locale].get("Name")
+        print(f"\nNew Game Loaded. Current Location is {Location_Name}")
+        input("\nPress Enter to continue")
     def set_name(Player,str):
         Player.name = str
     def start(Player):
@@ -52,6 +54,7 @@ class Player:
         Player.world.update_location("SETUP")
         Player.set_name(general_info.Name)
     def move(Player,id):
+        Player.move_count += 1
         Player.current_locale = id
         Player.locations_visited.append(id)
         Player.update_save_data()
@@ -69,9 +72,9 @@ class Player:
             if not loc_status:
                 Player.score += 25
                 Locations_Dict[Player.current_locale]["Was_Visited"] = True
-            print(f"\nYou have just visited + {loc_name}\nNice Job!\nYour score is now {Player.score}")
+            print(f"\nYou have just visited {loc_name}\nNice Job!\nYour score is now {Player.score}")
     def game_loop(Player):
-        while Player.move_count < 10 and not general_info.Quit_Status and not general_info.Load_Data.get("Status"):
+        while Player.move_count < 10 and not general_info.Quit_Status and not general_info.Load_Data.get("Load_Status"):
             Player.progress_display()
             next_loc = Player.choose()
             Player.move(next_loc)
@@ -80,7 +83,7 @@ class Player:
         Player.progress_display()
         if general_info.Quit_Status:
             Player.move(11)
-        elif general_info.Load_Data_Status:
+        elif general_info.Load_Data.get("Load_Status"):
             Player.load_save_data()
             Player.game_loop()
         else:

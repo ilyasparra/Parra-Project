@@ -144,33 +144,51 @@ Locations_Dict = {
     }
 
 }
-User_Commmands = ["","NORTH","SOUTH","EAST","WEST","EXAMINE","HELP","QUIT","SAVE","LOAD"]
+User_Commands = ["","NORTH","SOUTH","EAST","WEST","EXAMINE","HELP","QUIT","SAVE","LOAD"]
+def User_Command_Finder(str): 
+    if str in User_Commands:
+        return User_Commands.index(str)
+    return "Not Found"
 Examine_Statements = ["Nice","full of Loud people","Colorful","A Competitve place"]
 Map = [
     ["N",4,2,6],
     [1,8,7,9],
     ["N",5,10,3]
 ]
+
 Location_List_General = []
 Current_Save_Data = ""
 Load_Data = {
-    "Status" : False,
+    "Load_Status" : False,
     "Save_Data" : None
 }
 Save_States = []
+
 def prompt_save_name(action):
     save_file_name = input("\nEnter name of save file: ") + ".txt"
     if action == "WRITE":
         if not (save_file_name in Save_States):
+            Save_States.append(save_file_name)
             return save_file_name
         else:
             print("\nName can't match previous save file names, please choose another")
             prompt_save_name("WRITE")
     elif action == "READ":
-        if save_file_name in Save_States:
+        Save_File_Exist_Status:bool = True
+        try: 
+            file = open(save_file_name,"r")
+            file.close()
+        except :
+            Save_File_Exist_Status = False
+            pass
+        
+            
+        if Save_File_Exist_Status:
+            Save_States.append(save_file_name)
             return save_file_name
         else:
             print("\nSave file with that name doesn't exist, please ensure that name is spelled correctly")
+            print(Save_States)
             prompt_save_name("READ")
 def read_save_file(filename):
     file = open(filename,"r")
@@ -192,16 +210,14 @@ def id_to_coords(id):
     map_coords = [None,None]
     Break_Indicator = False
     for row in range(len(Map)):
-        for col in range(len(Map)):
+        for col in range(len(Map[row])):
             if Map[row][col] == id:
                 map_coords = row, col
                 Break_Indicator = True
                 break
         if Break_Indicator:
             break
-    return map_coords
-    
-
+    return map_coords 
 def get_nearby_locations(coords):
         r, c = coords
         North_offset = [-1,0]
