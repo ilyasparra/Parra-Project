@@ -118,9 +118,17 @@ class Location:
             print("\n"+Location.message)
             name_set = input("\n"+Location.info.get("Name_Set"))
             general_info.Name = name_set
-            print("\n"+Location.info.get("Greeting"))
+            input("\n"+Location.info.get("Greeting"))
+            input("\n" + Location.info.get("Instructions"))
             input("\n"+Location.input)
-        else:
+        elif Location.id == 12:
+            print("\n" + Location.message)
+            user_response = general_info.Restart_Prompt()
+            general_info.Restart_Status = user_response
+            if user_response:
+                input("\n"+Location.input)
+            pass
+        elif Location.id == 13:
             print("\n"+Location.message)
             print("\nThank you for playing this game!")
             input("\n"+Location.input)

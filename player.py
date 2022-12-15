@@ -30,8 +30,13 @@ class Player:
         Data = name + "\n" + current_location + "\n" + locations_visited + "\n" + moves + "\n" + score + "\n"
         general_info.Current_Save_Data = Data
         return None
-    def load_save_data(Player):
-        save_data = general_info.Load_Data.get("Save_Data")
+    def load_save_data(Player,reset=False):
+        data:str
+        if not reset:
+            data = "Save_Data"
+        else:
+            data = "Reset_Data"
+        save_data = general_info.Load_Data.get(data)
         Player.name = save_data.get("Name")
         Player.current_locale = save_data.get("Location_Id")
         Player.locations_visited = save_data.get("Locations_Visited")
@@ -56,7 +61,8 @@ class Player:
     def move(Player,id):
         Player.move_count += 1
         Player.current_locale = id
-        Player.locations_visited.append(id)
+        if not id in Player.locations_visited:
+            Player.locations_visited.append(id)
         Player.update_save_data()
         Player.world.update_location(id)
     def choose(Player):
@@ -79,13 +85,24 @@ class Player:
             next_loc = Player.choose()
             Player.move(next_loc)
             Player.move_count += 1
+    def reset(Player):
+        Player.load_save_data(True)
     def ending(Player):
         Player.progress_display()
         if general_info.Quit_Status:
+            # Ending Quit, if player quits throughout game
             Player.move(11)
         elif general_info.Load_Data.get("Load_Status"):
+            # Early end to load new save file
             Player.load_save_data()
             Player.game_loop()
-        else:
+        elif len(Player.locations_visited) < 7:
+            # Ending 1; Player doesn't visit most locations
             Player.move(12)
+            if general_info.Restart_Status:
+                Player.reset()
+                Player.game_loop()
+        else:
+            # Ending 2; Player visits most locations
+            Player.move(13)
         

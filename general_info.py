@@ -5,11 +5,13 @@ Game_Title = "\nWelcome to Your Free Trip To England\n"
 Name_Input = "\nEnter your name: "
 Name = ""
 Greeting = "\nHey, ! Hope you are doing well. Guess what? \nCongratulations, because of your hard work and dedication playing soccer, \nyou have been awarded a free trip to England!"
-begin = "\nPress enter to continue to the next stadium: "
-end = "You have finished your trip! Press Enter to see credits"
-# Old version: Quit_Msg = "You have decided to quit the game. You will be exited out of the game after completing the stop."
+Instructions = "\n*Game Instructions*\nValid Commands are:\n'HELP' to display command list\n'EXAMINE' to display location info\n'QUIT' to exit game\n'SAVE' to create a save file\n'LOAD' to load a save file.\n There are 10 locations and if you go through most of them you get the good ending, so go for it! "
+begin = "\nPress enter to start your soccer journey: "
+end = "You have finished your trip!\n Sadly you didn't visit most of the locations. Press Enter to see credits"
+end2 = "You have finished your trip\n Good job on visiting most of the locations! Press Enter to see credits"
 Quit_Msg = "You have decided to quit the game. Press enter to see end."
 Quit_Status = False
+Restart_Status = False
 msg_1 = "\nPress enter to continue:"
 msg_2 = "\nYou are at Old Trafford surrounded by red jerseys of Manchester United fans."
 msg_3 = "\nYou are at the Etihad surrounded by Manchester City fans."
@@ -61,6 +63,7 @@ Locations_Dict = {
         "Message" : Game_Msg_List[0],
         "Name_Set" : Name_Input,
         "Greeting" : Greeting,
+        "Instructions" : Instructions,
         "Input_Text": begin,
         "Was_Visited" : False
     },
@@ -141,6 +144,10 @@ Locations_Dict = {
     12: {
         "Message" : end,
         "Input_Text" : copyright_text
+    },
+    13 : {
+        "Message" : end2,
+        "Input_Text" : copyright_text
     }
 
 }
@@ -155,10 +162,25 @@ Map = [
     [1,8,7,9],
     ["N",5,10,3]
 ]
+def Restart_Prompt():
+    user_input = input("Do you want to restart: Yes or No? ")
+    if user_input.upper() == "YES" or user_input.upper() == "Y":
+        print("\nGame will restart soon")
+        return True
+    else:
+        print("\nGame will end soon")
+        return False
 
 Location_List_General = []
 Current_Save_Data = ""
 Load_Data = {
+    "Reset_Data" : {
+        "Name" : "",
+        "Location_Id" : 0,
+        "Locations_Visited" : [],
+        "Moves_Done" : [],
+        "Score" : 0
+    },
     "Load_Status" : False,
     "Save_Data" : None
 }
